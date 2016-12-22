@@ -2,7 +2,8 @@ import {render} from 'react-dom'
 import {createStore} from 'redux';
 import {Provider, connect} from 'react-redux';
 
-import Things from './things';
+import ThingsText from './ThingsText';
+import ThingsD3 from './ThingsD3';
 
 import reducer, {addThing} from './reducer';
 
@@ -13,10 +14,19 @@ let Button = ({dispatch}) => (
 );
 Button = connect()(Button);
 
+function ThingsControl() {
+  return (
+    <div className='things-control'>
+      <Button />
+      <ThingsText />
+    </div>
+  );
+}
+
 const App = () => (
   <div>
-    <Button />
-    <Things />
+    <ThingsD3 />
+    <ThingsControl />
   </div>
 );
 

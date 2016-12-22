@@ -1,4 +1,16 @@
 body {
   font-size: 14px;
   font-family: "Comic Sans MS";
+  position: relative;
+  width: 100%;
+}
+
+.things-control {
+  background: white;
+  border: 1px solid black;
+  display: inline-block;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100px;
 }

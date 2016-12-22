@@ -2,9 +2,9 @@ import {connect} from 'react-redux';
 
 import {removeThing} from './reducer';
 
-function Things({things, dispatch}) {
+function ThingsText({things, dispatch}) {
   return (
-    <ul>
+    <ul className='things-text'>
       {things.map(({name}, index) => <li key={index}>
         <a href='#' onClick={() => dispatch(removeThing(index))}>
           X
@@ -17,6 +17,6 @@ function Things({things, dispatch}) {
 function mapThingsStateToProps({things}) {
   return {things};
 }
-Things = connect(mapThingsStateToProps)(Things);
+ThingsText = connect(mapThingsStateToProps)(ThingsText);
 
-export default Things
+export default ThingsText
