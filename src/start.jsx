@@ -13,28 +13,44 @@ function addThing() {
   }
 }
 
+function removeThing(index) {
+  return {
+    type: 'remove',
+    index
+  }
+}
+
 function reducer(state=initialState, action) {
   switch (action.type) {
     case 'add':
       const newThing = {name: action.name}
       return {...state, things: [...state.things, newThing]};
+    case 'remove':
+      const newThings = [...state.things];
+      newThings.splice(action.index, 1);
+      return {...state, things: newThings};
   }
   return state;
 }
 
-let Buttons = ({dispatch}) => (
+let Button = ({dispatch}) => (
   <div>
     <button onClick={() => dispatch(addThing())}>Add a thing</button>
-    <button>Remove a thing</button>
   </div>
 );
-Buttons = connect()(Buttons);
+Button = connect()(Button);
 
-let Things = ({things}) => (
-  <ul>
-    {things.map(({name}, index) => <li key={index}>{name}</li>)}
-  </ul>
-);
+function Things({things, dispatch}) {
+  return (
+    <ul>
+      {things.map(({name}, index) => <li key={index}>
+        <a href='#' onClick={() => dispatch(removeThing(index))}>
+          X
+        </a> - {name}
+      </li>)}
+    </ul>
+  );
+}
 
 function mapThingsStateToProps({things}) {
   return {things};
@@ -43,7 +59,7 @@ Things = connect(mapThingsStateToProps)(Things);
 
 const App = () => (
   <div>
-    <Buttons />
+    <Button />
     <Things />
   </div>
 );
