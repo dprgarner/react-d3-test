@@ -14,3 +14,30 @@ body {
   top: 0;
   width: 100px;
 }
+
+.d3-box pre {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.d3-box .thing {
+  background: red;
+  border-radius: 20px;
+  border: 1px solid red;
+  display: inline-block;
+  height: 40px;
+  position: absolute;
+  width: 40px;
+  vertical-align: bottom;
+  font-size: 10px;
+}
+
+.d3-box .things {
+  margin-left: 200px;
+  border: 1px solid black;
+  display: inline-block;
+  height: 200px;
+  position: absolute;
+  width: 200px;
+}
