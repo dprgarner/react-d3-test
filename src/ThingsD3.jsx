@@ -2,22 +2,20 @@ import {connect} from 'react-redux';
 
 import * as d3 from 'd3-force';
 
-
-function PreNodes({nodes}) {
+function PreSimulation({nodes}) {
   return <pre>
     {JSON.stringify(nodes, null, 2)}
   </pre>;
 }
 
-
-function Nodes({nodes}) {
+function Simulation({nodes}) {
   return (
     <ul className='things'>
       {nodes.map(({index, x, y}) =>
         <li key={index} className='thing' style={{
           left: x,
           top: y,
-        }}>{Math.floor(x) + ',' + Math.floor(y)}</li>
+        }}>{`${index}: ${Math.floor(x)},${Math.floor(y)}`}</li>
       )}
     </ul>
   );
@@ -27,18 +25,26 @@ class ThingsD3 extends React.Component {
   constructor(props) {
     super(props);
     this.displayName = 'ThingsD3';
+
     this.simulation = d3
-      .forceSimulation([{}, {vx: -100, vy: 10}, {}, {}, {}, {}, {}, {}, {}])
-      .force('collide', d3.forceCollide(20))
-      .force("y", d3.forceY(100))
-      .on('tick', () => this.forceUpdate());
+    .forceSimulation([
+      {},
+      {},
+      {x: 100, y: 100},
+      {},
+    ])
+    .alphaMin(0.01)
+    .force('collide', d3.forceCollide(20))
+    .force('center', d3.forceCenter(100, 100))
+    .on('tick', () => this.forceUpdate());
   }
 
   render() {
     const nodes = this.simulation.nodes();
+    // const links = this.simulation.links();
     console.log('rendered');
     return <div className='d3-box'>
-      <Nodes nodes={nodes} />
+      <Simulation nodes={nodes} />
     </div>;
   }
 }
