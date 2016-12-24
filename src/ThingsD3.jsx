@@ -52,10 +52,13 @@ class ThingsD3 extends React.Component {
     super(props);
     this.displayName = 'ThingsD3';
 
+    this.links = [];
+
     this.simulation = d3
     .forceSimulation()
     .alphaMin(0.01)
     .force('charge', d3.forceManyBody().strength(30))
+    .force('link', d3.forceLink())
     .force('collide', d3.forceCollide(20))
     .force('center', d3.forceCenter(100, 100))
     .on('tick', () => this.forceUpdate());
@@ -63,22 +66,28 @@ class ThingsD3 extends React.Component {
 
   componentWillReceiveProps({things}) {
     // Update the simulation with the new nodes and restart
-    const nodes = this.simulation.nodes().filter(({id}) =>
-      _.some(things, {id})
+    const existingNodesObj = _.fromPairs(_.map(
+      this.simulation.nodes(), (node) => [node.id, node]
+    ));
+    const newNodes = _.map(things, (node) =>
+      existingNodesObj[node.id] || node
     );
 
     this.simulation
-    .nodes(things)
-    .alpha(1)
-    .restart();
+    .nodes(newNodes)
+    .alpha(1);
+
+    // this.setLinks();
+    this.simulation.restart();
   }
 
   render() {
     const nodes = this.simulation.nodes();
-    // const links = this.simulation.links();
-    console.log('rendered');
+    const links = this.simulation.force('link').links();
+    // console.log('rendered');
     return <div className='d3-box'>
-      <Simulation nodes={nodes} />
+      <PreSimulation nodes={nodes} />
+      <Simulation nodes={nodes} links={links} />
     </div>;
   }
 }
