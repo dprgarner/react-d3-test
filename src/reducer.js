@@ -5,7 +5,7 @@ let i = 0;
 export function addThing() {
   return {
     type: 'add',
-    name: i++,
+    id: i++,
   }
 }
 
@@ -19,7 +19,7 @@ export function removeThing(index) {
 export default function reducer(state=initialState, action) {
   switch (action.type) {
     case 'add':
-      const newThing = {name: action.name}
+      const newThing = {id: action.id}
       return {...state, things: [...state.things, newThing]};
     case 'remove':
       const newThings = [...state.things];

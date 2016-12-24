@@ -5,10 +5,10 @@ import {removeThing} from './reducer';
 function ThingsText({things, dispatch}) {
   return (
     <ul className='things-text'>
-      {things.map(({name}, index) => <li key={index}>
+      {things.map(({id}, index) => <li key={index}>
         <a href='#' onClick={() => dispatch(removeThing(index))}>
           X
-        </a> - {name}
+        </a> - {id}
       </li>)}
     </ul>
   );
