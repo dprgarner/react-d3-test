@@ -28,22 +28,38 @@ import _ from 'lodash'
 
 import * as d3 from 'd3-force';
 
-function PreSimulation({nodes}) {
+function PreSimulation({json}) {
   return <pre>
-    {JSON.stringify(nodes, null, 2)}
+    {JSON.stringify(json, null, 2)}
   </pre>;
 }
 
-function Simulation({nodes}) {
+function Simulation({nodes, links}) {
   return (
-    <ul className='things'>
-      {nodes.map(({id, x, y}) =>
-        <li key={id} className='thing' style={{
-          left: x,
-          top: y,
-        }}>{`${id}: ${Math.floor(x)},${Math.floor(y)}`}</li>
-      )}
-    </ul>
+    <div className='things'>
+      <svg className='links-svg'>
+        <g>
+          {links.map(({source, target}, index) =>
+            <line
+              className='link'
+              key={index}
+              x1={source.x}
+              y1={source.y}
+              x2={target.x}
+              y2={target.y}
+            />
+          )}
+        </g>
+      </svg>
+      <ul>
+        {nodes.map(({id, x, y}) =>
+          <li key={id} className='thing' style={{
+            left: x,
+            top: y,
+          }}>{`${id}: ${Math.floor(x)},${Math.floor(y)}`}</li>
+        )}
+      </ul>
+    </div>
   );
 }
 
@@ -52,16 +68,31 @@ class ThingsD3 extends React.Component {
     super(props);
     this.displayName = 'ThingsD3';
 
-    this.links = [];
-
     this.simulation = d3
     .forceSimulation()
     .alphaMin(0.01)
-    .force('charge', d3.forceManyBody().strength(30))
-    .force('link', d3.forceLink())
+    .force('charge', d3.forceManyBody().strength(-100))
+    .force('link', d3
+      .forceLink()
+      .id((node) => node.id)
+      .distance(50)
+    )
     .force('collide', d3.forceCollide(20))
     .force('center', d3.forceCenter(100, 100))
     .on('tick', () => this.forceUpdate());
+  }
+
+  createLinks(nodes) {
+    // console.log(JSON.stringify(nodes));
+    let links = [];
+
+    for (let i = 0; i < nodes.length - 1; i++) {
+      links.push({
+        source: nodes[i].id,
+        target: nodes[i+1].id,
+      });
+    }
+    return links;
   }
 
   componentWillReceiveProps({things}) {
@@ -73,20 +104,22 @@ class ThingsD3 extends React.Component {
       existingNodesObj[node.id] || node
     );
 
-    this.simulation
+    const links = this.simulation
     .nodes(newNodes)
-    .alpha(1);
+    .force('link')
+      .links(this.createLinks(newNodes))
 
-    // this.setLinks();
-    this.simulation.restart();
+    this.simulation
+    .alpha(1)
+    .restart();
   }
 
   render() {
     const nodes = this.simulation.nodes();
     const links = this.simulation.force('link').links();
-    // console.log('rendered');
+
     return <div className='d3-box'>
-      <PreSimulation nodes={nodes} />
+      <PreSimulation json={{nodes, links}} />
       <Simulation nodes={nodes} links={links} />
     </div>;
   }

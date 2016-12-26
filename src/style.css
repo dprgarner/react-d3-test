@@ -22,7 +22,7 @@ body {
 }
 
 .d3-box .thing {
-  background: red;
+  background-color: rgba(255, 0, 0, 0.6);
   border-radius: 20px;
   border: 1px solid black;
   display: inline-block;
@@ -31,13 +31,23 @@ body {
   width: 40px;
   vertical-align: bottom;
   font-size: 10px;
+  margin: -20px;
 }
 
 .d3-box .things {
-  margin-left: 200px;
   border: 1px solid black;
   display: inline-block;
-  height: 200px;
+  height: 100vh;
   position: absolute;
-  width: 200px;
+  width: 100%;
+}
+
+.d3-box .links-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.d3-box .link {
+  stroke-width: 1px;
+  stroke: black;
 }
