@@ -56,7 +56,9 @@ function Simulation({nodes, links}) {
           <li key={id} className='thing' style={{
             left: x,
             top: y,
-          }}>{`${id}: ${Math.floor(x)},${Math.floor(y)}`}</li>
+          }}>
+            <span>{`${id}`}</span>
+          </li>
         )}
       </ul>
     </div>
@@ -78,7 +80,7 @@ class ThingsD3 extends React.Component {
       .distance(50)
     )
     .force('collide', d3.forceCollide(20))
-    .force('center', d3.forceCenter(100, 100))
+    .force('center', d3.forceCenter(300, 300))
     .on('tick', () => this.forceUpdate());
   }
 
@@ -104,7 +106,7 @@ class ThingsD3 extends React.Component {
       existingNodesObj[node.id] || node
     );
 
-    const links = this.simulation
+    this.simulation
     .nodes(newNodes)
     .force('link')
       .links(this.createLinks(newNodes))
@@ -118,8 +120,8 @@ class ThingsD3 extends React.Component {
     const nodes = this.simulation.nodes();
     const links = this.simulation.force('link').links();
 
+    // <PreSimulation json={{nodes, links}} />
     return <div className='d3-box'>
-      <PreSimulation json={{nodes, links}} />
       <Simulation nodes={nodes} links={links} />
     </div>;
   }

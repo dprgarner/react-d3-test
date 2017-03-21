@@ -34,6 +34,12 @@ body {
   margin: -20px;
 }
 
+.d3-box .thing span {
+  position: absolute;
+  top: 10px;
+  left: 16px;
+}
+
 .d3-box .things {
   border: 1px solid black;
   display: inline-block;
