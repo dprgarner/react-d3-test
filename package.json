@@ -1,8 +1,8 @@
 {
-  "name": "react-redux-boilerplate",
-  "version": "1.0.0",
+  "name": "react-d3-test",
+  "version": "0.0.0",
   "description": "",
-  "repository": "https://github.com/dprgarner/react-redux-boilerplate",
+  "repository": "https://github.com/dprgarner/react-d3-test",
   "main": "index.js",
   "scripts": {
     "test": "karma start karma.conf.js",
